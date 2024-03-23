@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main # replace with your branch name if it's not 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup dmtrctl
+        uses: demeter-run/setup-dmtrctl@v1
+        with:
+          version: "latest"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: foo
+        run: npm ci
+
+      - name: Build
+        working-directory: foo
+        run: npm run build
+
+      - name: Deploy
+        working-directory: foo
+        run: dmtrctl --version
