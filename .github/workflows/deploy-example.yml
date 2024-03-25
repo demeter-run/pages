@@ -15,7 +15,7 @@ jobs:
       - name: Setup dmtrctl
         uses: demeter-run/setup-dmtrctl@v1
         with:
-          version: "latest"
+          version: "v1.0.0-alpha.1"
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -32,4 +32,8 @@ jobs:
 
       - name: Deploy
         working-directory: foo
-        run: dmtrctl --version
+        env:
+          DMTR_NAMESPACE: foo
+          DMTR_API_KEY: ${{ secrets.DMTR_API_KEY }}
+          DMTR_REGISTRY_AUTH: ${{ secrets.DMTR_REGISTRY_AUTH }}
+        run: dmtrctl pages deploy --source ./dist
